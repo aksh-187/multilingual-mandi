@@ -1,4 +1,6 @@
-streamlit==1.27.0
+streamlit==1.30.0
 pandas
 numpy
 requests
+Pillow
+altair
