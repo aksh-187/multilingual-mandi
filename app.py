@@ -1,115 +1,91 @@
 import streamlit as st
-import pandas as pd
 
-# Page setup
-st.set_page_config(page_title="🌾 Multilingual Mandi AI", layout="wide")
+# Page config
+st.set_page_config(page_title="Multilingual Mandi AI", layout="wide")
 
-# Load CSV
-df = pd.read_csv("mandi_data.csv")
+# Multilingual dictionary
+translations = {
+    "English": {
+        "title": "🌾 Multilingual Mandi AI",
+        "subtitle": "AI assistant for Indian farmers & traders",
+        "select_language": "🌐 Select Language",
+        "select_state": "🏞 Select State",
+        "select_district": "📍 Select District",
+        "enter_crop": "🌱 Enter Crop Name",
+        "button": "Get Mandi Info",
+        "landing_desc": "Get live mandi prices in your local language. Understand trends and make informed decisions.",
+        "problem": "Problem",
+        "solution": "Solution",
+        "problem_items": ["Get mandi prices in local language", "Understand price trends", "Access simple AI tools"],
+        "solution_items": ["Multilingual price queries", "Easy explanations", "Farmer-friendly UI"],
+        "error_crop": "Please enter a crop name!",
+        "info_placeholder": "Price data integration coming next 🚜📈",
+    },
+    "Hindi": {
+        "title": "🌾 बहुभाषी मंडी एआई",
+        "subtitle": "भारतीय किसानों और व्यापारियों के लिए एआई सहायक",
+        "select_language": "🌐 भाषा चुनें",
+        "select_state": "🏞 राज्य चुनें",
+        "select_district": "📍 जिला चुनें",
+        "enter_crop": "🌱 फसल का नाम दर्ज करें",
+        "button": "मंडी जानकारी प्राप्त करें",
+        "landing_desc": "अपनी स्थानीय भाषा में मंडी की कीमतें प्राप्त करें। रुझानों को समझें और सूचित निर्णय लें।",
+        "problem": "समस्या",
+        "solution": "समाधान",
+        "problem_items": ["स्थानीय भाषा में मंडी की कीमतें प्राप्त करें", "कीमत रुझान समझें", "सरल एआई उपकरणों तक पहुँच"],
+        "solution_items": ["बहुभाषी मूल्य प्रश्न", "सरल व्याख्याएँ", "किसान-मित्र इंटरफ़ेस"],
+        "error_crop": "कृपया फसल का नाम दर्ज करें!",
+        "info_placeholder": "कीमत डेटा एकीकरण जल्द आ रहा है 🚜📈",
+    }
+    # Add more languages here...
+}
 
-# --- CSS Styling ---
+# CSS styling
 st.markdown("""
 <style>
-/* Body */
-body {
-    background-color: #f9f9f9;
-}
-
-/* Main title */
-.title {
-    color: #2a7f3e;
-    font-size: 42px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 0;
-}
-
-/* Subtitle */
-.subtitle {
-    color: #555555;
-    font-size: 18px;
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 40px;
-}
-
-/* Card style */
-.card {
-    background-color: white;
-    border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-/* Button */
-.stButton>button {
-    background-color: #2a7f3e;
-    color: white;
-    font-size: 16px;
-    padding: 10px 24px;
-    border-radius: 8px;
-    border: none;
-}
-
-/* Input box */
-.stTextInput>div>div>input {
-    padding: 10px;
-    font-size: 16px;
-}
-
-/* Selectbox padding */
-.stSelectbox>div>div>div>div {
-    padding: 8px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .title { font-size: 32px; }
-    .subtitle { font-size: 16px; }
-    .stButton>button { width: 100%; }
-}
+body {background-color: #f9f9f9;}
+.title {color: #2a7f3e; font-size: 42px; font-weight: bold; text-align: center; margin-bottom: 0;}
+.subtitle {color: #555555; font-size: 18px; text-align: center; margin-top: 0; margin-bottom: 40px;}
+.card {background-color: white; border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
+.stButton>button {background-color: #2a7f3e; color: white; font-size: 16px; padding: 10px 24px; border-radius: 8px; border: none;}
+.stTextInput>div>div>input {padding: 10px; font-size: 16px;}
+.stSelectbox>div>div>div>div {padding: 8px;}
 </style>
 """, unsafe_allow_html=True)
 
-# --- Header ---
+# Landing Page
 st.markdown('<div class="title">🌾 Multilingual Mandi AI</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">AI assistant for Indian farmers & traders</div>', unsafe_allow_html=True)
+st.markdown('<p style="text-align:center; font-size:18px;">Get live mandi prices in your local language. Understand trends and make informed decisions.</p>', unsafe_allow_html=True)
 
-# --- Language selection ---
-language = st.selectbox("🌐 Select Language", ["English", "Hindi", "Telugu", "Tamil", "Kannada"])
+st.markdown("---")
 
-# --- Problem & Solution Cards ---
-st.markdown('<div class="card"><b>Problem</b><ul><li>Get mandi prices in local language</li><li>Understand price trends</li><li>Access simple AI tools</li></ul></div>', unsafe_allow_html=True)
-st.markdown('<div class="card"><b>Solution</b><ul><li>Multilingual price queries</li><li>Easy explanations</li><li>Farmer-friendly UI</li></ul></div>', unsafe_allow_html=True)
+# Language selection
+language = st.selectbox("🌐 Select Language", list(translations.keys()))
+t = translations[language]
 
-# --- Crop input ---
-crop_name = st.text_input("🌱 Enter Crop Name", placeholder="e.g. Tomato, Paddy, Onion")
+# Problem & Solution
+st.markdown(f'<div class="card"><b>{t["problem"]}</b><ul>' + "".join([f"<li>{i}</li>" for i in t["problem_items"]]) + '</ul></div>', unsafe_allow_html=True)
+st.markdown(f'<div class="card"><b>{t["solution"]}</b><ul>' + "".join([f"<li>{i}</li>" for i in t["solution_items"]]) + '</ul></div>', unsafe_allow_html=True)
 
-# --- State dropdown ---
-state = st.selectbox("Select State", df['State'].unique())
+# State & District (dummy data)
+states = ["Maharashtra", "Karnataka", "Tamil Nadu"]
+districts = {
+    "Maharashtra": ["Pune", "Nagpur", "Mumbai"],
+    "Karnataka": ["Bangalore", "Mysore", "Mangalore"],
+    "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai"]
+}
 
-# --- District dropdown (dependent) ---
-districts = df[df['State'] == state]['District'].unique()
-district = st.selectbox("Select District", districts)
+state = st.selectbox(t["select_state"], states)
+district = st.selectbox(t["select_district"], districts[state])
 
-# --- Market dropdown (dependent) ---
-markets = df[(df['State'] == state) & (df['District'] == district)]['Market'].unique()
-market = st.selectbox("Select Market", markets)
+# Crop input
+crop_name = st.text_input(t["enter_crop"], placeholder="e.g. Tomato, Paddy, Onion")
 
-# --- Get Mandi Info Button ---
-if st.button("Get Mandi Info"):
+# Button
+if st.button(t["button"]):
     if crop_name.strip() == "":
-        st.error("Please enter a crop name!")
+        st.error(t["error_crop"])
     else:
-        filtered = df[
-            (df['Crop'].str.lower() == crop_name.strip().lower()) &
-            (df['State'] == state) &
-            (df['District'] == district) &
-            (df['Market'] == market)
-        ]
-        if filtered.empty:
-            st.error("Data not found! Try another crop or market.")
-        else:
-            price = filtered['Price'].values[0]
-            st.success(f"{crop_name} price in {market}, {district}, {state}: ₹{price} per kg ({language})")
+        st.success(f"Showing mandi info for {crop_name} in {district}, {state} [{language}]")
+        st.info(t["info_placeholder"])
