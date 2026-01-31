@@ -50,21 +50,25 @@ STATE_DISTRICTS = {
     "Telangana": ["Hyderabad", "Warangal", "Karimnagar"]
 }
 
+# ---------- HEADER FIRST ----------
+st.markdown(
+    "<h1 style='text-align:center;color:#2a7f3e;'>🌾 Multilingual Mandi AI</h1>",
+    unsafe_allow_html=True
+)
+st.markdown(
+    "<p style='text-align:center;'>AI assistant for Indian farmers & traders</p>",
+    unsafe_allow_html=True
+)
+
+# ---------- LANGUAGE SELECTOR ----------
 language = st.selectbox("🌐 Select Language", ["English", "Hindi", "Telugu"])
 T = LANG[language]
 
-st.markdown(f"""
-<h1 style="text-align:center;color:#2a7f3e;">{T["title"]}</h1>
-<p style="text-align:center;">{T["subtitle"]}</p>
-""", unsafe_allow_html=True)
+st.markdown("---")
 
+# ---------- MAIN CONTROLS ----------
 state = st.selectbox(T["select_state"], list(STATE_DISTRICTS.keys()))
-
-district = st.selectbox(
-    T["select_district"],
-    STATE_DISTRICTS[state]   # 🔥 THIS IS THE FIX
-)
-
+district = st.selectbox(T["select_district"], STATE_DISTRICTS[state])
 crop = st.text_input(T["enter_crop"])
 
 if st.button(T["button"]):
